@@ -1,0 +1,25 @@
+{
+  "name": "e-coin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/infotex-network/E-COIN.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/infotex-network/E-COIN/issues"
+  },
+  "homepage": "https://github.com/infotex-network/E-COIN#readme",
+  "devDependencies": {
+    "@openzeppelin/truffle-upgrades": "^1.8.1",
+    "chai": "^4.3.4",
+    "truffle": "^5.1.65"
+  }
+}
