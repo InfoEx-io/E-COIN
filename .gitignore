@@ -1,0 +1,7 @@
+secrets.json
+
+contracts/.placeholder
+test/.placeholder
+artifacts
+build
+node_modules
