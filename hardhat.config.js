@@ -1,25 +1,16 @@
-require("@nomiclabs/hardhat-waffle");
-require('@nomiclabs/hardhat-ethers');
-const { mnemonic } = require('./secrets.json');
-
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
-
-  for (const account of accounts) {
-    console.log(account.address);
-  }
-});
-
-// You need to export an object to set up your config
-// Go to https://hardhat.org/config/ to learn more
-
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+
+require('@nomiclabs/hardhat-ethers');
+require("@nomiclabs/hardhat-etherscan");
+require('@openzeppelin/hardhat-upgrades');
+
+const { mnemonic, projectId } = require('./secrets.json');
+
 module.exports = {
-  defaultNetwork: "mainnet",
+  defaultNetwork: "testnet",
+  solidity: "0.8.4",
   networks: {
     localhost: {
       url: "http://127.0.0.1:8545"
@@ -39,24 +30,12 @@ module.exports = {
       accounts: {mnemonic: mnemonic}
     }
   },
-  // etherscan: {
-  //   apiKey: "YOUR_ETHERSCAN_API_KEY"
-  // },
-  solidity: {
-    version: "0.8.2",
-    settings: {
-      optimizer: {
-        enabled: true
-      }
-    }
+  etherscan: {
+    // Your API key for Etherscan
+    // Obtain one at https://etherscan.io/
+    apiKey: projectId
   },
-  paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./cache",
-    artifacts: "./artifacts"
-  },
-  mocha: {
-    timeout: 20000
-  }
 };
+
+
+// acquire extend blind tank puzzle enlist gas saddle night lounge silver atom
