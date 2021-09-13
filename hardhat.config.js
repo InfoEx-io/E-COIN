@@ -1,11 +1,16 @@
+require("dotenv").config();
+
+require("@openzeppelin/hardhat-upgrades");
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-etherscan");
 require("@nomiclabs/hardhat-waffle");
-require('@nomiclabs/hardhat-ethers');
-const { mnemonic } = require('./secrets.json');
+require("hardhat-gas-reporter");
+require("solidity-coverage");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
-task("accounts", "Prints the list of accounts", async () => {
-  const accounts = await ethers.getSigners();
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
 
   for (const account of accounts) {
     console.log(account.address);
@@ -19,44 +24,38 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  defaultNetwork: "mainnet",
+  defaultNetwork: "testnet",
+  solidity: "0.8.4",
   networks: {
     localhost: {
       url: "http://127.0.0.1:8545"
     },
     hardhat: {
+      initialBaseFeePerGas: 0, // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
+    },
+    ropsten: {
+      url: process.env.ROPSTEN_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
       gasPrice: 20000000000,
-      accounts: {mnemonic: mnemonic}
+      accounts: { mnemonic: process.env.MNEMONIC }
     },
     mainnet: {
       url: "https://bsc-dataseed.binance.org/",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: {mnemonic: mnemonic}
-    }
+      accounts: { mnemonic: process.env.MNEMONIC }
+    },
   },
-  // etherscan: {
-  //   apiKey: "YOUR_ETHERSCAN_API_KEY"
-  // },
-  solidity: {
-    version: "0.8.2",
-    settings: {
-      optimizer: {
-        enabled: true
-      }
-    }
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD",
   },
-  paths: {
-    sources: "./contracts",
-    tests: "./test",
-    cache: "./cache",
-    artifacts: "./artifacts"
+  etherscan: {
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
-  mocha: {
-    timeout: 20000
-  }
 };
