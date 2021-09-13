@@ -1,13 +1,28 @@
+require("dotenv").config();
+
+require("@openzeppelin/hardhat-upgrades");
+require("@nomiclabs/hardhat-ethers");
+require("@nomiclabs/hardhat-etherscan");
+require("@nomiclabs/hardhat-waffle");
+require("hardhat-gas-reporter");
+require("solidity-coverage");
+
+// This is a sample Hardhat task. To learn how to create your own go to
+// https://hardhat.org/guides/create-task.html
+task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
+  const accounts = await hre.ethers.getSigners();
+
+  for (const account of accounts) {
+    console.log(account.address);
+  }
+});
+
+// You need to export an object to set up your config
+// Go to https://hardhat.org/config/ to learn more
+
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
-
-require('@nomiclabs/hardhat-ethers');
-require("@nomiclabs/hardhat-etherscan");
-require('@openzeppelin/hardhat-upgrades');
-
-const { mnemonic, projectId } = require('./secrets.json');
-
 module.exports = {
   defaultNetwork: "testnet",
   solidity: "0.8.4",
@@ -16,26 +31,31 @@ module.exports = {
       url: "http://127.0.0.1:8545"
     },
     hardhat: {
+      initialBaseFeePerGas: 0, // workaround from https://github.com/sc-forks/solidity-coverage/issues/652#issuecomment-896330136 . Remove when that issue is closed.
+    },
+    ropsten: {
+      url: process.env.ROPSTEN_URL || "",
+      accounts:
+        process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY] : [],
     },
     testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
       gasPrice: 20000000000,
-      accounts: {mnemonic: mnemonic}
+      accounts: { mnemonic: process.env.MNEMONIC }
     },
     mainnet: {
       url: "https://bsc-dataseed.binance.org/",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: {mnemonic: mnemonic}
-    }
+      accounts: { mnemonic: process.env.MNEMONIC }
+    },
+  },
+  gasReporter: {
+    enabled: process.env.REPORT_GAS !== undefined,
+    currency: "USD",
   },
   etherscan: {
-    // Your API key for Etherscan
-    // Obtain one at https://etherscan.io/
-    apiKey: projectId
+    apiKey: process.env.ETHERSCAN_API_KEY,
   },
 };
-
-
-// acquire extend blind tank puzzle enlist gas saddle night lounge silver atom
