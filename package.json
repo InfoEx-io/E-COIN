@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/infotex-network/E-COIN#readme",
   "devDependencies": {
+    "@ericxstone/hardhat-blockscout-verify": "^1.0.0",
     "@nomiclabs/buidler": "^1.4.8",
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.6",
